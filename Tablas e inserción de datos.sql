@@ -2,6 +2,14 @@ DROP DATABASE IF EXISTS torneo_IESHaria;
 CREATE DATABASE torneo_IESHaria;
 USE torneo_IESHaria;
 
+CREATE TABLE entrenador (
+    codigo_entrenador INT PRIMARY KEY NOT NULL,
+    nombre_entrenador VARCHAR(50) NOT NULL,
+    apellido1 VARCHAR(50) NOT NULL,
+    apellido2 VARCHAR(50),
+    nacionalidad VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE equipo (
   codigo_equipo INT PRIMARY KEY NOT NULL,
   nombre_equipo VARCHAR(50) UNIQUE NOT NULL,
@@ -14,14 +22,6 @@ CREATE TABLE equipo (
   curso VARCHAR(20) NOT NULL,
   codigo_entrenador INT NOT NULL,
   FOREIGN KEY (codigo_entrenador) REFERENCES entrenador (codigo_entrenador)
-);
-
-CREATE TABLE entrenador (
-    codigo_entrenador INT PRIMARY KEY NOT NULL,
-    nombre_entrenador VARCHAR(50) NOT NULL,
-    apellido1 VARCHAR(50) NOT NULL,
-    apellido2 VARCHAR(50),
-    nacionalidad VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE goleador (
@@ -48,10 +48,7 @@ CREATE TABLE partido_equipo (
 );
 
 
-
-
 ##### TABLA EQUIPO #####
-
 INSERT INTO equipo (codigo_equipo, nombre_equipo, victorias, empates, derrotas, goles_a_favor, goles_en_contra, fase_alcanzada, curso, codigo_entrenador) VALUES 
 (1, "Goofy", 1, 1, 2, 8, 13, "Fase de grupos", "1CFGS", 6), 			(2, "Los Galácticos", 3, 0, 3, 17, 19, "Semifinal", "PROFES", 4),
 (3, "Los Pistolos", 6, 0, 0, 31, 11, "Final", "4A", 1), 				(4, "Cholismo", 4, 0, 3, 19, 8, "Final", "1BCT", 7),
@@ -63,10 +60,7 @@ INSERT INTO equipo (codigo_equipo, nombre_equipo, victorias, empates, derrotas, 
 (15, "Patata City", 1, 0, 2, 4, 13, "Fase de grupos", "1CFGM", 16), 	(16, "Los Máquinas", 0, 0, 3, 3, 12, "Fase de grupos", "DÍVER", 18),
 (17, "Andytrynys", 1, 1, 2, 5, 9, "Fase de grupos", "2BACH", 14), 		(18, "Actimel", 1, 0, 3, 4, 10, "Fase de grupos", "2CFGM", 17);
 
-
-
 ##### TABLA ENTRENADOR #####
-
 INSERT INTO entrenador (codigo_entrenador, nombre_entrenador, apellido1, apellido2, nacionalidad) VALUES 
 (1, "Alejandro", "López", "Santos", "España"), 			(2, "Emilio", "Gómez", "Correa", "España"),
 (3, "Diego", "Alcalde", "Agredano", "España"), 			(4, "Cristina", "Osuna", "Tavío", "España"), 	
@@ -78,10 +72,7 @@ INSERT INTO entrenador (codigo_entrenador, nombre_entrenador, apellido1, apellid
 (15, "Diego Pablo", "Simeone", NULL, "Argentina"), 		(16, "Luis", "Aragonés", "Suárez", "España"), 
 (17, "Antonio", "Montelongo", "Hernández", "España"), 	(18, "Lionel", "Sebastián", "Scaloni", "Argentina");
 
-
-
 ##### TABLA GOLEADOR #####
-
 INSERT INTO goleador (codigo_goleador, nombre_goleador, goles, codigo_equipo) VALUES 
 # Goofy
 (1, "Amaro", 5, 1), (2, "Fernando", 2, 1), (3, "Iriem", 1, 1),
@@ -120,10 +111,7 @@ INSERT INTO goleador (codigo_goleador, nombre_goleador, goles, codigo_equipo) VA
 # Fabio
 (61, "Fabio", 27, 1);
 
-
-
 ##### TABLA PARTIDO #####
-
 INSERT INTO partido (codigo_partido, fecha, fase, resultado)
 VALUES 
 (1, '2024-01-22', 'Fase de grupos', '4-0'), (2, '2024-01-23', 'Fase de grupos', '0-8'),
@@ -150,10 +138,7 @@ VALUES
 -- Final
 (39, '2024-04-18', 'Final', '2-2');
 
-
-
 ##### TABLA PARTIDO_EQUIPO #####
-
 INSERT INTO partido_equipo (codigo_partido, codigo_equipo)
 VALUES 
 -- Fase de grupos
