@@ -48,6 +48,19 @@ CREATE TABLE partido_equipo (
 );
 
 
+##### TABLA ENTRENADOR #####
+INSERT INTO entrenador (codigo_entrenador, nombre_entrenador, apellido1, apellido2, nacionalidad) VALUES 
+(1, "Alejandro", "López", "Santos", "España"), 			(2, "Emilio", "Gómez", "Correa", "España"),
+(3, "Diego", "Alcalde", "Agredano", "España"), 			(4, "Cristina", "Osuna", "Tavío", "España"), 	
+(5, "Ana", "Hernández", "Betancort", "España"), 		(6, "Helena", "Peña", "Betancor", "España"), 	
+(7, "Javier", "Sebastián", "Herrero", "España"), 		(8, "Xavi", "Hernández", "Creus", "España"), 	
+(9, "Pep", "Guardiola", "Sala", "España"), 				(10, "José", "Mourinho", "Félix", "Portugal"), 	
+(11, "Luis Enrique", "Martínez", "García", "España"), 	(12, "Jurgen", "Klopp", NULL, "Alemania"), 	
+(13, "Carlo", "Ancelotti", NULL, "Italia"), 			(14, "Zinedine", "Zidane", NULL, "Francia"), 	
+(15, "Diego Pablo", "Simeone", NULL, "Argentina"), 		(16, "Luis", "Aragonés", "Suárez", "España"), 
+(17, "Antonio", "Montelongo", "Hernández", "España"), 	(18, "Lionel", "Sebastián", "Scaloni", "Argentina");
+
+
 ##### TABLA EQUIPO #####
 INSERT INTO equipo (codigo_equipo, nombre_equipo, victorias, empates, derrotas, goles_a_favor, goles_en_contra, fase_alcanzada, curso, codigo_entrenador) VALUES 
 (1, "Goofy", 1, 1, 2, 8, 13, "Fase de grupos", "1CFGS", 6), 			(2, "Los Galácticos", 3, 0, 3, 17, 19, "Semifinal", "PROFES", 4),
@@ -60,17 +73,6 @@ INSERT INTO equipo (codigo_equipo, nombre_equipo, victorias, empates, derrotas, 
 (15, "Patata City", 1, 0, 2, 4, 13, "Fase de grupos", "1CFGM", 16), 	(16, "Los Máquinas", 0, 0, 3, 3, 12, "Fase de grupos", "DÍVER", 18),
 (17, "Andytrynys", 1, 1, 2, 5, 9, "Fase de grupos", "2BACH", 14), 		(18, "Actimel", 1, 0, 3, 4, 10, "Fase de grupos", "2CFGM", 17);
 
-##### TABLA ENTRENADOR #####
-INSERT INTO entrenador (codigo_entrenador, nombre_entrenador, apellido1, apellido2, nacionalidad) VALUES 
-(1, "Alejandro", "López", "Santos", "España"), 			(2, "Emilio", "Gómez", "Correa", "España"),
-(3, "Diego", "Alcalde", "Agredano", "España"), 			(4, "Cristina", "Osuna", "Tavío", "España"), 	
-(5, "Ana", "Hernández", "Betancort", "España"), 			(6, "Helena", "Peña", "Betancor", "España"), 	
-(7, "Javier", "Sebastián", "Herrero", "España"), 		(8, "Xavi", "Hernández", "Creus", "España"), 	
-(9, "Pep", "Guardiola", "Sala", "España"), 				(10, "José", "Mourinho", "Félix", "Portugal"), 	
-(11, "Luis Enrique", "Martínez", "García", "España"), 	(12, "Jurgen", "Klopp", NULL, "Alemania"), 	
-(13, "Carlo", "Ancelotti", NULL, "Italia"), 			(14, "Zinedine", "Zidane", NULL, "Francia"), 	
-(15, "Diego Pablo", "Simeone", NULL, "Argentina"), 		(16, "Luis", "Aragonés", "Suárez", "España"), 
-(17, "Antonio", "Montelongo", "Hernández", "España"), 	(18, "Lionel", "Sebastián", "Scaloni", "Argentina");
 
 ##### TABLA GOLEADOR #####
 INSERT INTO goleador (codigo_goleador, nombre_goleador, goles, codigo_equipo) VALUES 
@@ -111,6 +113,7 @@ INSERT INTO goleador (codigo_goleador, nombre_goleador, goles, codigo_equipo) VA
 # Fabio
 (61, "Fabio", 27, 1);
 
+
 ##### TABLA PARTIDO #####
 INSERT INTO partido (codigo_partido, fecha, fase, resultado)
 VALUES 
@@ -138,9 +141,9 @@ VALUES
 -- Final
 (39, '2024-04-18', 'Final', '2-2');
 
+
 ##### TABLA PARTIDO_EQUIPO #####
-INSERT INTO partido_equipo (codigo_partido, codigo_equipo)
-VALUES 
+INSERT INTO partido_equipo (codigo_partido, codigo_equipo) VALUES 
 -- Fase de grupos
 (1, 10), (1, 12),      (2, 11), (2, 7),  	 (3, 14), (3, 6),      (4, 3), (4, 13),      (5, 15), (5, 5),      (6, 16), (6, 2),
 (7, 10), (7, 9), 	   (8, 8), (8, 1), 	  	 (9, 18), (9, 4),      (10, 12), (10, 11),   (11, 6), (11, 3),     (12, 13), (12, 14),
