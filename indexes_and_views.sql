@@ -1,7 +1,5 @@
 use torneo_iesharia;
 
-DROP INDEX `codigo_equipo`;
-
 # 5 ÍNDICES
 ALTER TABLE `torneo_iesharia`.`equipo` ADD INDEX(nombre_equipo);
 
@@ -31,4 +29,3 @@ SELECT nombre_goleador, goles FROM goleador WHERE goles >= ALL (SELECT goles fro
 CREATE VIEW vista_entrenadores_equipos AS
 SELECT e.nombre_entrenador, eq.nombre_equipo
 FROM entrenador e join equipo eq on eq.codigo_entrenador = e.codigo_entrenador;
-
