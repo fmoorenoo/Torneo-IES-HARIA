@@ -22,6 +22,21 @@ CREATE TABLE equipo (
   curso VARCHAR(20) NOT NULL,
   codigo_entrenador INT NOT NULL,
   FOREIGN KEY (codigo_entrenador) REFERENCES entrenador (codigo_entrenador)
+    ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+
+CREATE TABLE patrocinador (
+  codigo_patrocinador INT NOT NULL,
+  nombre_patrocinador VARCHAR(40) NOT NULL,
+  codigo_equipo INT NOT NULL,
+  FOREIGN KEY (codigo_equipo) REFERENCES equipo (codigo_equipo)
+);
+
+CREATE TABLE socio (
+  codigo_socio INT NOT NULL,
+  nombre_socio VARCHAR(40) NOT NULL,
+  codigo_equipo INT NOT NULL,
+  FOREIGN KEY (codigo_equipo) REFERENCES equipo (codigo_equipo)
 );
 
 CREATE TABLE goleador (
@@ -30,6 +45,7 @@ CREATE TABLE goleador (
   goles INT NOT NULL,
   codigo_equipo INTEGER NOT NULL,
   FOREIGN KEY (codigo_equipo) REFERENCES equipo (codigo_equipo)
+    ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 CREATE TABLE partido (
@@ -43,8 +59,10 @@ CREATE TABLE partido_equipo (
   codigo_partido INT NOT NULL,
   codigo_equipo INT NOT NULL,
   PRIMARY KEY (codigo_partido, codigo_equipo),
-  FOREIGN KEY (codigo_partido) REFERENCES partido (codigo_partido),
+  FOREIGN KEY (codigo_partido) REFERENCES partido (codigo_partido)
+	ON DELETE RESTRICT ON UPDATE RESTRICT,
   FOREIGN KEY (codigo_equipo) REFERENCES equipo (codigo_equipo)
+    ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
 
@@ -72,6 +90,50 @@ INSERT INTO equipo (codigo_equipo, nombre_equipo, victorias, empates, derrotas, 
 (13, "Pomelos Seductores", 1, 0, 2, 2, 3, "Fase de grupos", "4B", 10), 	(14, "Achigüiches", 0, 0, 3, 1, 11, "Fase de grupos", "3A", 15),
 (15, "Patata City", 1, 0, 2, 4, 13, "Fase de grupos", "1CFGM", 16), 	(16, "Los Máquinas", 0, 0, 3, 3, 12, "Fase de grupos", "DÍVER", 18),
 (17, "Andytrynys", 1, 1, 2, 5, 9, "Fase de grupos", "2BACH", 14), 		(18, "Actimel", 1, 0, 3, 4, 10, "Fase de grupos", "2CFGM", 17);
+
+
+##### TABLA SOCIO #####
+INSERT INTO socio (codigo_socio, nombre_socio, codigo_equipo) VALUES
+(1, 'Carlos Martínez', 1),
+(2, 'Ana Gómez', 2),
+(3, 'Luis Rodríguez', 3),
+(4, 'María López', 4),
+(5, 'José Fernández', 5),
+(6, 'Lucía Sánchez', 6),
+(7, 'Miguel Pérez', 7),
+(8, 'Laura García', 8),
+(9, 'Javier González', 9),
+(10, 'Elena Díaz', 10),
+(11, 'Pablo Torres', 11),
+(12, 'Marta Ramírez', 12),
+(13, 'Sergio Ruiz', 13),
+(14, 'Carmen Morales', 14),
+(15, 'David Jiménez', 15),
+(16, 'Isabel Ortega', 16),
+(17, 'Andrés Navarro', 17),
+(18, 'Clara Castillo', 18);
+
+
+##### TABLA PATROCINADOR #####
+INSERT INTO patrocinador (codigo_patrocinador, nombre_patrocinador, codigo_equipo) VALUES
+(1, 'Nike', 1),
+(2, 'Adidas', 2),
+(3, 'Puma', 3),
+(4, 'Reebok', 4),
+(5, 'Under Armour', 5),
+(6, 'Coca-Cola', 6),
+(7, 'Pepsi', 7),
+(8, 'Red Bull', 8),
+(9, 'Samsung', 9),
+(10, 'Emirates', 10),
+(11, 'Chevrolet', 11),
+(12, 'Toyota', 12),
+(13, 'Visa', 13),
+(14, 'Mastercard', 14),
+(15, 'Heineken', 15),
+(16, 'Budweiser', 16),
+(17, 'AIG', 17),
+(18, 'Santander', 18);
 
 
 ##### TABLA GOLEADOR #####
@@ -158,3 +220,34 @@ INSERT INTO partido_equipo (codigo_partido, codigo_equipo) VALUES
 (37, 3), (37, 2), (38, 4), (38, 6),
 -- Final
 (39, 4), (39, 3);
+
+
+##### VIEWS #####
+CREATE VIEW vista_equipos_jugadores AS
+SELECT e.nombre_equipo, e.victorias, e.fase_alcanzada, g.nombre_goleador, g.goles
+FROM equipo e join goleador g on e.codigo_equipo = g.codigo_equipo;
+
+CREATE VIEW vista_equipos AS
+SELECT nombre_equipo, fase_alcanzada FROM equipo;
+
+CREATE VIEW vista_goleadores AS
+SELECT nombre_goleador, goles FROM goleador;
+
+CREATE VIEW vista_maximo_goleador AS
+SELECT nombre_goleador, goles FROM goleador WHERE goles >= ALL (SELECT goles from goleador);
+
+CREATE VIEW vista_entrenadores_equipos AS
+SELECT e.nombre_entrenador, eq.nombre_equipo
+FROM entrenador e join equipo eq on eq.codigo_entrenador = e.codigo_entrenador;
+
+
+##### INDEXES ####
+ALTER TABLE `torneo_iesharia`.`equipo` ADD INDEX(nombre_equipo);
+
+ALTER TABLE `torneo_iesharia`.`equipo` ADD INDEX(victorias);
+
+ALTER TABLE `torneo_iesharia`.`partido` ADD INDEX(resultado);
+
+ALTER TABLE `torneo_iesharia`.`goleador` ADD INDEX(nombre_goleador);
+
+ALTER TABLE `torneo_iesharia`.`entrenador` ADD INDEX(nombre_entrenador);
