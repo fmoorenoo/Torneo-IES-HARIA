@@ -251,3 +251,123 @@ ALTER TABLE `torneo_iesharia`.`partido` ADD INDEX(resultado);
 ALTER TABLE `torneo_iesharia`.`goleador` ADD INDEX(nombre_goleador);
 
 ALTER TABLE `torneo_iesharia`.`entrenador` ADD INDEX(nombre_entrenador);
+
+
+
+##### PROCEDURES #####
+
+# Añadir equipos
+CREATE PROCEDURE AgregarEquipo(
+    @codigo_equipo INT,
+    @nombre_equipo VARCHAR(50),
+    @victorias INT,
+    @empates INT,
+    @derrotas INT,
+    @goles_a_favor INT,
+    @goles_en_contra INT,
+    @fase_alcanzada VARCHAR(20),
+    @curso VARCHAR(20),
+    @codigo_entrenador INT
+)
+AS
+BEGIN
+    INSERT INTO equipo (
+        codigo_equipo, nombre_equipo, victorias, empates, derrotas,
+        goles_a_favor, goles_en_contra, fase_alcanzada, curso, codigo_entrenador
+    ) VALUES (
+        @codigo_equipo, @nombre_equipo, @victorias, @empates, @derrotas,
+        @goles_a_favor, @goles_en_contra, @fase_alcanzada, @curso, @codigo_entrenador
+    );
+END;
+
+# Actualizar datos de equipos
+CREATE PROCEDURE ActualizarEstadisticasEquipo(
+    @codigo_equipo INT,
+    @victorias INT,
+    @empates INT,
+    @derrotas INT,
+    @goles_a_favor INT,
+    @goles_en_contra INT
+)
+AS
+BEGIN
+    UPDATE equipo
+    SET victorias = @victorias,
+        empates = @empates,
+        derrotas = @derrotas,
+        goles_a_favor = @goles_a_favor,
+        goles_en_contra = @goles_en_contra
+    WHERE codigo_equipo = @codigo_equipo;
+END;
+
+#Añadir un partido y asociar los equipos
+CREATE PROCEDURE RegistrarPartido(
+    @codigo_partido INT,
+    @fecha DATE,
+    @fase VARCHAR(20),
+    @resultado VARCHAR(5),
+    @codigo_equipo1 INT,
+    @codigo_equipo2 INT
+)
+AS
+BEGIN
+    INSERT INTO partido (codigo_partido, fecha, fase, resultado)
+    VALUES (@codigo_partido, @fecha, @fase, @resultado);
+
+    INSERT INTO partido_equipo (codigo_partido, codigo_equipo)
+    VALUES (@codigo_partido, @codigo_equipo1), (@codigo_partido, @codigo_equipo2);
+END;
+
+
+##### FUNCTIONS #####
+
+# Calcular diferencia de goles de un equipo
+CREATE FUNCTION CalcularDiferenciaGoles(@codigo_equipo INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @goles_a_favor INT;
+    DECLARE @goles_en_contra INT;
+
+    SELECT @goles_a_favor = goles_a_favor, @goles_en_contra = goles_en_contra
+    FROM equipo
+    WHERE codigo_equipo = @codigo_equipo;
+
+    RETURN @goles_a_favor - @goles_en_contra;
+END;
+
+# Obtener nombre completo de un entrenador
+CREATE FUNCTION ObtenerNombreCompletoEntrenador(@codigo_entrenador INT)
+RETURNS VARCHAR(150)
+AS
+BEGIN
+    DECLARE @nombre VARCHAR(50);
+    DECLARE @apellido1 VARCHAR(50);
+    DECLARE @apellido2 VARCHAR(50);
+
+    SELECT @nombre = nombre_entrenador, @apellido1 = apellido1, @apellido2 = apellido2
+    FROM entrenador
+    WHERE codigo_entrenador = @codigo_entrenador;
+
+    RETURN @nombre + ' ' + @apellido1 + ISNULL(' ' + @apellido2, '');
+END;
+
+# Calcular cuantos puntos tendría un equipo 
+# (3 puntos por victoria, 1 punto por empate)
+
+CREATE FUNCTION CalcularPuntosEquipo(@codigo_equipo INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @victorias INT;
+    DECLARE @empates INT;
+    DECLARE @puntos INT;
+
+    SELECT @victorias = victorias, @empates = empates
+    FROM equipo
+    WHERE codigo_equipo = @codigo_equipo;
+
+    SET @puntos = (@victorias * 3) + (@empates);
+
+    RETURN @puntos;
+END;
